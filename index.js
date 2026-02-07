@@ -18,8 +18,8 @@ app.set("view engine", "ejs") // Tells Express that we want to use EJS as our te
 const credentials = {
     type: process.env.type,
     project_id: process.env.project_id,
-    private_key_id: process.env.private_key,
-    private_key: process.env.type,
+    private_key_id: process.env.private_key_id,
+    private_key: process.env.private_key,
     client_email: process.env.client_email,
     client_id: process.env.client_id,
     auth_uri: process.env.auth_uri,
@@ -198,11 +198,4 @@ app.post("/push/new-items", async (req, res) => {
         console.error(err);
         res.status(500).json({ success: false, error: err.message });
     }
-});
-
-
-
-app.listen(1337, (req, res) => {
-    console.log("running on 1337")
-
 });
