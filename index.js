@@ -15,9 +15,23 @@ app.use(express.json({ limit: "10mb" }));
 app.set("view engine", "ejs") // Tells Express that we want to use EJS as our template engine. Now, when we call res.render("file"), Express will look for a file named "file.ejs" in the "views" folder and render it as HTML.
 
 // ---------- Google Sheets setup (GLOBAL, runs once) ----------
+const credentials = {
+    type: process.env.type,
+    project_id: process.env.project_id,
+    private_key_id: process.env.private_key,
+    private_key: process.env.type,
+    client_email: process.env.client_email,
+    client_id: process.env.client_id,
+    auth_uri: process.env.auth_uri,
+    token_uri: process.env.token_uri,
+    auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
+    client_x509_cert_url: process.env.client_x509_cert_url,
+    universe_domain: process.env.universe_domain,
+};
+
 const auth = new google.auth.GoogleAuth({
-    keyFile: "../Keys/credentials.json",
-    scopes: "https://www.googleapis.com/auth/spreadsheets",
+    credentials,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
 let googleSheets;
@@ -190,4 +204,5 @@ app.post("/push/new-items", async (req, res) => {
 
 app.listen(1337, (req, res) => {
     console.log("running on 1337")
+
 });
