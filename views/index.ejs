@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheet Data</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    
+    <h1>Google Sheets DashBoard</h1>
+    <p>How to Generate xlsx version with PDF: </p>
+    <ol>
+        <li>Open Claude https://claude.ai/new</li>
+        <li>Paste the latest pdf file with this prompt:</li>
+        <ul><i>
+            Create an Excel file with all items from the invoice with 6 columns: 
+            Id, Invoice#, Date, Lot#, Description and Cost. The cost column is formatted 
+            as currency ($). The Id column will start after 
+            <b>
+                <%= newItems.length-2 %>
+            </b> 
+            and increment by 1. Keep the date and Invoice# same for each row.
+        </i></ul>
+        <li>Download the excel file and paste the rows in google sheets.</li>
+        <ul>Use Simple Ctrl+C & Ctrl+V</ul>
+    </ol>
+    <fieldset>
+
+        <legend>
+            <button onclick="showSection('new_items')">New Items</button>
+            <button onclick="showSection('checked_items')">Checked Items</button>
+            <button onclick="showSection('need_to_make')">Need To Make Items</button>
+            <button onclick="showSection('parts_items')">Spare Parts</button>
+            <button onclick="showSection('return_items')">Return Items</button>
+            <button onclick="showSection('ai_gen_list_items')">AI Generated Items</button>
+        </legend>
+
+        <!-- DIV for displaying new items -->
+        <div id="new_items" class="sections">
+            <h2>New Items</h2>
+            <p>Here are the brand new items.</p>
+                
+                <form method="POST" action="/update/new-items">
+                    <table border="1">
+
+                        <% for (let i = 0; i <= 0; i++) { %> <!-- Iterate: only run while i is 0 or less -->
+                            <tr>
+                                <% newItems[i].forEach(cell => { %>
+                                    <th><%= cell %></th>
+                                <% }) %>
+                               <th><label for="status">Status</label></th>
+                            </tr>
+                        <% } %>
+                    
+                        <!-- Looping over each data point-->   
+                        <% newItems.slice(1).forEach((row, rowIndex) => { %>
+                            <tr> 
+                                <% for (let i = 0; i <= 5; i++) { %>
+                                    <td>
+                                        <%
+                                            const letters = "ABCDEF";
+                                            const letter = letters[i];
+                                        %>
+
+                                        <input
+                                            name="!<%= letter %><%= rowIndex + 2 %>"
+                                            value="<%= row[i] %>" 
+                                        />
+                                    </td>
+                                <% } %>
+                                    <td>
+                                        
+                                        <select name="!G<%= rowIndex + 2%>" id="status-<%= rowIndex + 2 %>" key="G<%= rowIndex+2%>">
+                                            <option value="select" selected disabled>Select</option>
+                                            <option value="Brand New">Brand New</option>
+                                            <option value="Used As New">Used As New</option>
+                                            <option value="Used">Used</option>
+                                            <option value="Return">Return</option>
+                                            <option value="Parts">Parts</option>
+                                            <option value="Need To Make">Need To Make</option>
+                                        </select>
+                                        
+                                    </td>
+                            </tr>
+                        <% }) %>
+                    </table>
+
+                    <button type="submit">Save Changes</button>
+                </form>
+
+                <button onclick="selectValueUpdate()">Push Changes</button>
+        </div>
+
+        <!-- DIV for checked items -->
+        <div id="checked_items" class="sections" style="display: none;">
+            <h2>Checked Items</h2>
+            <p>Here are the items that are all checked and ready to be posted.</p>
+
+            <table border="1">
+
+                <% for (let i = 0; i <= 0; i++) { %>
+                    <tr>
+                        <% checked[i].forEach( cell => { %>
+                            <th><%= cell %></th>
+                        <% }) %>
+                    </tr>
+                <% } %>
+
+                <% checked.slice(1).forEach((row, rowIndex) => { %>
+                    <tr>
+                        <% for (let i = 0; i <= 6; i++) { %>
+                            <td>
+                                <%
+                                    const letters = "ABCDEFG";
+                                    const letter = letters[i];
+                                %>
+
+                                <input 
+                                name="!<%= letter %><%= rowIndex + 2 %>"
+                                value="<%= row[i] %>"
+                                readonly
+                                />
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+
+        <!-- DIV for need to make items -->
+        <div id="need_to_make" class="sections" style="display: none;">
+            <h2>Need To Make Items</h2>
+            <p>Here are the items that are checked and we know that they can be sold after building them.</p>
+
+            <table border="1">
+
+                <% for (let i = 0; i <= 0; i++) { %>
+                    <tr>
+                        <% needToMake[i].forEach( cell => { %>
+                            <th><%= cell %></th>
+                        <% }) %>
+                    </tr>
+                <% } %>
+
+                <% needToMake.slice(1).forEach((row, rowIndex) => { %>
+                    <tr>
+                        <% for (let i = 0; i <= 6; i++) { %>
+                            <td>
+                                <%
+                                    const letters = "ABCDEFG";
+                                    const letter = letters[i];
+                                %>
+
+                                <input 
+                                name="!<%= letter %><%= rowIndex + 2 %>"
+                                value="<%= row[i] %>"
+                                readonly
+                                />
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </table>
+
+        </div>
+
+        <!-- DIV for spare parts -->
+        <div id="parts_items" class="sections" style="display: none;">
+            <h2>Spare Parts</h2>
+            <p>Here are the items whose parts can be useful in the future.</p>
+
+            <table border="1">
+
+                <% for (let i = 0; i <= 0; i++) { %>
+                    <tr>
+                        <% partItems[i].forEach( cell => { %>
+                            <th><%= cell %></th>
+                        <% }) %>
+                    </tr>
+                <% } %>
+
+                <% partItems.slice(1).forEach((row, rowIndex) => { %>
+                    <tr>
+                        <% for (let i = 0; i <= 6; i++) { %>
+                            <td>
+                                <%
+                                    const letters = "ABCDEFG";
+                                    const letter = letters[i];
+                                %>
+
+                                <input 
+                                name="!<%= letter %><%= rowIndex + 2 %>"
+                                value="<%= row[i] %>"
+                                readonly
+                                />
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </table>
+
+        </div>
+
+        <!-- DIV for return items -->
+        <div id="return_items" class="sections" style="display: none;">
+            <h2>Return Items</h2>
+            <p>Items that need to be returned to the vendor.</p>
+
+            <table border="1">
+
+                <% for (let i = 0; i <= 0; i++) { %>
+                    <tr>
+                        <% returned[i].forEach( cell => { %>
+                            <th><%= cell %></th>
+                        <% }) %>
+                    </tr>
+                <% } %>
+
+                <% returned.slice(1).forEach((row, rowIndex) => { %>
+                    <tr>
+                        <% for (let i = 0; i <= 6; i++) { %>
+                            <td>
+                                <%
+                                    const letters = "ABCDEFG";
+                                    const letter = letters[i];
+                                %>
+
+                                <input 
+                                name="!<%= letter %><%= rowIndex + 2 %>"
+                                value="<%= row[i] %>"
+                                readonly
+                                />
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </table>
+
+        </div>
+
+        <!-- DIV for ai gen list items-->
+         <div id="ai_gen_list_items" class="sections" style="display: none;">
+            <h2>AI Generated Listing</h2>
+            <p><%= aiGenListing %></p>
+         </div>
+    
+    </fieldset>
+    <script>
+        
+        // function which shows each different sections
+        function showSection(id) {
+            document.querySelectorAll('.sections').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+        /*Just testing input name to create cell x:y
+        document.querySelectorAll("select").forEach(select => {
+            if (select.value == "select") {   // note: input.value is a string
+                console.log("Found! Input name:", select.name, select.value);
+                select.style.border = "2px solid red"; // optional: highlight it
+            }
+        });
+        */
+        // Inside your form page <script>:
+        let changed = new Set();
+
+        document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("change", () => changed.add(input.name));
+        });
+
+        // On submit, intercept form
+        document.querySelector("form").addEventListener("submit", async e => {
+        e.preventDefault(); // stop default submit
+
+        const updates = Array.from(changed).map(name => {
+            const input = document.querySelector(`input[name="${name}"]`);
+            return { range: name, value: input.value };
+        });
+
+        // send updates to server (fetch / POST)
+        await fetch("/update/new-items", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updates)
+        });
+
+        changed.clear();
+        alert("Changes saved!");
+        });
+
+        const selectValueUpdate = async () => {
+            const rows = [];
+            const selects = document.querySelectorAll("select[id^='status-']");
+            
+            selects.forEach(select => {
+                const tr = select.closest("tr"); // get row element
+                const inputs = tr.querySelectorAll("input");
+                const data = Array.from(inputs).map(input => input.value);
+
+                // Add status as the last column
+                data.push(select.value);
+
+                rows.push({
+                    rowIndex: select.id.split("-")[1], // e.g., 2, 3, ...
+                    data,
+                    status: select.value
+                });
+            });
+
+            // Send to server
+            const response = await fetch("/push/new-items", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(rows)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // ✅ success
+                location.reload(); // reload page
+            } else {
+                // ❌ error
+                alert(result.error || "Something went wrong!");
+            }
+        };
+
+    </script>
+</body>
+</html>

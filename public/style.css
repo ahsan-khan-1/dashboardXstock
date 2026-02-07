@@ -1,0 +1,116 @@
+/* General Page Styling */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 20px;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+h1, h2 {
+    color: #222;
+}
+
+/* Fieldset Styling */
+fieldset {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+}
+
+legend button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+legend button:hover {
+    background-color: #0056b3;
+}
+
+/* Sections */
+.sections {
+    margin-top: 15px;
+    padding: 10px;
+    
+    border-top: 1px solid #ccc;
+    background-color: #fdfdfd;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: fixed;
+}
+
+th, td {
+    border: 1px solid #aaa;
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td input {
+    width: 100%;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+td input[readonly] {
+    background-color: #e9ecef;
+    color: #555;
+}
+
+td select {
+    width: 100%;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+button {
+    padding: 6px 12px;
+    margin-top: 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Highlight select with "select" value */
+select[value="select"] {
+    border: 2px solid red;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    table, th, td {
+        font-size: 0.85rem;
+    }
+    legend button {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
