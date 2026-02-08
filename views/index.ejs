@@ -16,9 +16,11 @@
         <ul><i>
             Create an Excel file with all items from the invoice with 6 columns: 
             Id, Invoice#, Date, Lot#, Description and Cost. The cost column is formatted 
-            as currency ($). The Id column will start after 
+            as currency ($). The Id column will start at
+            
+            <!-- Keeping track of id dynamically -->
             <b>
-                <%= newItems.length-2 %>
+                <%= (newItems.length-1) + (needToMake.length-1) + (checked.length-1) + (partItems.length-1) + (returned.length-1) + (aiGenListing.length-1) %>
             </b> 
             and increment by 1. Keep the date and Invoice# same for each row.
         </i></ul>
@@ -327,4 +329,5 @@
 
     </script>
 </body>
+
 </html>
